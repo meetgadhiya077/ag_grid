@@ -1,6 +1,5 @@
 import ClientView from '@/components/ClientView';
 import StageView from '@/components/StageView';
-import { clients } from '@/utils/fakedata';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Loader from '@/components/common/Loader/index';
