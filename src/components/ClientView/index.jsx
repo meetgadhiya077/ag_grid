@@ -9,7 +9,7 @@ import { useMemo, useState } from 'react';
 
 ModuleRegistry.registerModules([ClientSideRowModelModule, RowGroupingModule]);
 
-const index = ({ data }) => {
+const Index = ({ data }) => {
   const [rowData, setRowData] = useState(data);
 
   const [colDefs, setColDefs] = useState([
@@ -114,16 +114,6 @@ const index = ({ data }) => {
         return null;
       }
     }
-    // {
-    //   field: 'QA Score',
-    //   valueGetter: params => {
-    //     if (params.node.group) {
-    //       const staticData = ['5', '4', '1', '3'];
-    //       return staticData[params.node.rowIndex];
-    //     }
-    //     return null;
-    //   }
-    // }
   ]);
 
   const autoGroupColumnDef = useMemo(() => {
@@ -138,6 +128,16 @@ const index = ({ data }) => {
     cellClass: '[&>.ag-cell-wrapper]:h-full'
   };
 
+  // Event handler for cell clicks
+  const onCellClicked = params => {
+    // Check if the clicked cell is expandable (i.e., it's in a group)
+    if (params.node && params.node.group) {
+      // Toggle the expansion state
+      const currentlyExpanded = params.node.expanded;
+      params.node.setExpanded(!currentlyExpanded);
+    }
+  };
+
   return (
     <div className='w-full h-dvh p-10 flex flex-col gap-y-5'>
       <h3 className='text-2xl font-semibold uppercase tracking-wider text-center underline'>
@@ -148,14 +148,15 @@ const index = ({ data }) => {
           rowData={rowData}
           columnDefs={colDefs}
           defaultColDef={defaultColDef}
+          autoGroupColumnDef={autoGroupColumnDef}
           pagination
           paginationPageSize={25}
           paginationPageSizeSelector={[25, 50, 75, 100]}
-          autoGroupColumnDef={autoGroupColumnDef}
+          onCellClicked={onCellClicked} // Attach the event handler
         />
       </div>
     </div>
   );
 };
 
-export default index;
+export default Index;

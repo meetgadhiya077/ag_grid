@@ -9,7 +9,7 @@ import { ScrollArea } from '../ui/scroll-area';
 
 ModuleRegistry.registerModules([ClientSideRowModelModule, RowGroupingModule]);
 
-const index = ({data}) => {
+const index = ({ data }) => {
   const [stageviewRowData, setStageviewRowData] = useState(
     data?.map(clients => {
       const staticData = [
@@ -134,31 +134,25 @@ const index = ({data}) => {
         if (params.node.rowGroupIndex === 0) {
           return params.node.childrenAfterGroup.length;
         }
-
         return null;
       }
-    },
-    // {
-    //   headerName: 'QA Scrore',
-    //   valueGetter: params => {
-    //     const fieldName = 'qa_score';
-    //     if (params.node.rowGroupIndex === 0) {
-    //       const total = params.node.childrenAfterGroup.reduce(
-    //         (acc, curr) => (acc += curr.allLeafChildren[0].data[fieldName]),
-    //         0
-    //       );
-    //       return total;
-    //     }
-
-    //     return null;
-    //   }
-    // }
+    }
   ]);
 
   const defaultColDef = {
     flex: 1,
     autoHeight: true,
     cellClass: '[&>.ag-cell-wrapper]:h-full'
+  };
+
+  // Event handler for cell clicks
+  const onCellClicked = params => {
+    // Check if the clicked cell is expandable (i.e., it's in a group)
+    if (params.node && params.node.group) {
+      // Toggle the expansion state
+      const currentlyExpanded = params.node.expanded;
+      params.node.setExpanded(!currentlyExpanded);
+    }
   };
 
   return (
@@ -175,6 +169,7 @@ const index = ({data}) => {
           paginationPageSize={25}
           paginationPageSizeSelector={[25, 50, 75, 100]}
           groupDisplayType='multipleColumns'
+          onCellClicked={onCellClicked} // Attach the event handler
         />
       </div>
     </div>
