@@ -142,7 +142,7 @@ const index = ({ data }) => {
   const defaultColDef = {
     flex: 1,
     autoHeight: true,
-    cellClass: '[&>.ag-cell-wrapper]:h-full'
+    cellClass: '[&>.ag-cell-wrapper]:h-full cursor-pointer'
   };
 
   // Event handler for cell clicks
