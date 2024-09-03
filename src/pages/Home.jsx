@@ -8,7 +8,6 @@ const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingCSVData, setisLoadingCSVData] = useState(false);
   const [data, setData] = useState();
-  // 'https://opensheet.elk.sh/13edLk3q0Demsu-LM2rtZH1097oA4-s2vdYclCIur70Y/Sheet1'
   console.log('data =====', data);
   const getConversations = async () => {
     try {
@@ -21,8 +20,7 @@ const Home = () => {
         time: item.Time,
         media: item.Media,
         input: item.Input,
-        output: item.Output,
-        stage: item?.Stage
+        output: item.Output
       }));
       setData(data);
       if (data?.length !== 0) {
@@ -45,7 +43,7 @@ const Home = () => {
 
           return acc;
         }, []);
-        // getStage(messagesByName);
+        getStage(messagesByName);
       }
     } catch (error) {
       console.log(error);
@@ -55,49 +53,49 @@ const Home = () => {
     }
   };
 
-  // const getStage = async body => {
-  //   try {
-  //     setIsLoading(true);
-  //     const res = await Promise.all(
-  //       body?.map(data =>
-  //         axios({
-  //           method: 'POST',
-  //           url: 'https://api.openai.com/v1/chat/completions',
-  //           headers: {
-  //             Authorization:
-  //               'Bearer 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'
-  //           },
-  //           data: {
-  //             model: 'gpt-4o-mini',
-  //             messages: [
-  //               {
-  //                 role: 'system',
-  //                 content:
-  //                   'You are a helpful assistant. And you have to give the only answer Hot or Warm as per question.'
-  //               },
-  //               {
-  //                 role: 'user',
-  //                 content: `Analyze the given question and give the answer Hot if in a question user want to buy the product else if it's a normal conversation then give me Warm as a answer. Question: ${data.msg}`
-  //               }
-  //             ]
-  //           }
-  //         })
-  //       )
-  //     );
+  const getStage = async body => {
+    try {
+      setIsLoading(true);
+      const res = await Promise.all(
+        body?.map(data =>
+          axios({
+            method: 'POST',
+            url: 'https://api.openai.com/v1/chat/completions',
+            headers: {
+              Authorization:
+                'Bearer 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'
+            },
+            data: {
+              model: 'gpt-4o-mini',
+              messages: [
+                {
+                  role: 'system',
+                  content:
+                    'You are a helpful assistant. And you have to give the only answer Hot or Warm as per question.'
+                },
+                {
+                  role: 'user',
+                  content: `Analyze the given question and give the answer Hot if in a question user want to buy the product else if it's a normal conversation then give me Warm as a answer. Question: ${data.msg}`
+                }
+              ]
+            }
+          })
+        )
+      );
 
-  //     setData(prevState => {
-  //       return prevState?.map(client => {
-  //         const index = body?.findIndex(data => data.name === client.name);
-  //         return { ...client, stage: res[index].data.choices[0].message.content };
-  //       });
-  //     });
-  //   } catch (error) {
-  //     console.log(error);
-  //   } finally {
-  //     setIsLoading(false);
-  //     setisLoadingCSVData(true);
-  //   }
-  // };
+      setData(prevState => {
+        return prevState?.map(client => {
+          const index = body?.findIndex(data => data.name === client.name);
+          return { ...client, stage: res[index].data.choices[0].message.content };
+        });
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+      setisLoadingCSVData(true);
+    }
+  };
 
   useEffect(() => {
     getConversations();
