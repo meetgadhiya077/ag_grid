@@ -109,6 +109,7 @@ const Index = ({ data }) => {
       field: 'stage',
       valueGetter: params => {
         if (params.node.group) {
+          console.log('params.node.group =====', params.node.allLeafChildren);
           return params.node.allLeafChildren[0].data.stage;
         }
         return null;
