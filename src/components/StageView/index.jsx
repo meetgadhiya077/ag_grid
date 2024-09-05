@@ -5,7 +5,7 @@ import '@ag-grid-community/styles/ag-grid.css';
 import '@ag-grid-community/styles/ag-theme-quartz.css';
 import { RowGroupingModule } from '@ag-grid-enterprise/row-grouping';
 import { useState } from 'react';
-import { ScrollArea } from '../ui/scroll-area';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 ModuleRegistry.registerModules([ClientSideRowModelModule, RowGroupingModule]);
 
@@ -169,7 +169,7 @@ const index = ({ data }) => {
           paginationPageSize={25}
           paginationPageSizeSelector={[25, 50, 75, 100]}
           groupDisplayType='multipleColumns'
-          onCellClicked={onCellClicked} // Attach the event handler
+          onCellClicked={onCellClicked}
         />
       </div>
     </div>
